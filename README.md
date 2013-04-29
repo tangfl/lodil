@@ -1,0 +1,4 @@
+lodil
+=====
+
+Local Dictionary Lib
