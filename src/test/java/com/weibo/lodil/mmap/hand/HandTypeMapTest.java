@@ -83,7 +83,7 @@ public class HandTypeMapTest {
 	}
 
 	private static void get(final HandTypesMap map, final HandTypesKeyImpl key, final int i, final boolean flag) {
-		final int k = i;
+		// final int k = i;
 		key.setBoolean(flag);
 		key.setInt(i);
 		final HandTypes ht = map.get(key);

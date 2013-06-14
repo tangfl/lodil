@@ -23,7 +23,6 @@ import java.nio.channels.FileChannel;
 
 import sun.nio.ch.DirectBuffer;
 
-@SuppressWarnings("restriction")
 public class MappedFileChannel {
 	private final RandomAccessFile raf;
 	private final ByteBuffer buffer;

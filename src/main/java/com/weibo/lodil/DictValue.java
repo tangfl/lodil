@@ -8,7 +8,7 @@ package com.weibo.lodil;
  * @author tangfulin
  *
  */
-public class DictValue {
+public class DictValue implements DictItem {
 
 	String valueString;
 	byte[] valueBytes;
@@ -34,13 +34,6 @@ public class DictValue {
 
 	public String getString() {
 		return valueString;
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-
 	}
 
 }

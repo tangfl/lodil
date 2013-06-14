@@ -15,7 +15,7 @@
  */
 /**
  * 
- * This package is migrated from vanilla's huge collection
+ * This package is migrated from vanilla's huge collection, except wrap/*
  * 
  * @see https://github.com/HugeCollections/Collections
  * @see http://vanillajava.blogspot.com/2011/09/new-contributors-to-hugecollections.html

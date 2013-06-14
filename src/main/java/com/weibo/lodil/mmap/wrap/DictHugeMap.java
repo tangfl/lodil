@@ -1,4 +1,6 @@
-package com.weibo.lodil.impl;
+package com.weibo.lodil.mmap.wrap;
+
+import java.util.Map;
 
 import com.weibo.lodil.DictKey;
 import com.weibo.lodil.DictValue;
@@ -51,6 +53,27 @@ public class DictHugeMap extends AbstractHugeMap<DictKey, DictKeyElement, DictVa
 
 	@Override
 	protected void compactOnAllocation(final DictAllocation ta, final long i) {
+	}
+
+	public boolean contains(final DictKey key) {
+		return false;
+	}
+
+	public DictValue get(final DictKey key) {
+		return null;
+	}
+
+	@Override
+	public DictValue put(final DictKey key, final DictValue value) {
+		return null;
+	}
+
+	public boolean mset(final Map<DictKey, DictValue> keyvalues) {
+		return true;
+	}
+
+	public boolean remove(final DictKey key) {
+		return true;
 	}
 
 	/**

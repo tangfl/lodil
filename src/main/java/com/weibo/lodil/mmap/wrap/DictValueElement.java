@@ -1,12 +1,14 @@
-package com.weibo.lodil.impl;
+package com.weibo.lodil.mmap.wrap;
 
+import com.weibo.lodil.DictItem;
 import com.weibo.lodil.DictKey;
 import com.weibo.lodil.DictValue;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
 
-public class DictValueElement extends AbstractHugeElement<DictValue, DictAllocation> implements HugeElement<DictValue> {
+public class DictValueElement extends AbstractHugeElement<DictValue, DictAllocation> implements HugeElement<DictValue>,
+		DictItem {
 
 	DictAllocation allocation;
 

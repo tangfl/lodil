@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.weibo.lodil.impl;
+package com.weibo.lodil.mmap.wrap;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ public class MmapKVDictionary implements KVDictionary {
 	}
 
 	public boolean mset(final Map<DictKey, DictValue> keyvalues) {
-		dictMap.putAll(keyvalues);
+		dictMap.mset(keyvalues);
 		return true;
 	}
 

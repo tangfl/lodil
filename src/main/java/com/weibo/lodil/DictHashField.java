@@ -7,7 +7,7 @@ package com.weibo.lodil;
  * @author tangfulin
  * 
  */
-public class DictHashField extends DictValue {
+public class DictHashField extends DictValue implements DictItem {
 
 	public DictHashField() {
 		super();
@@ -19,13 +19,6 @@ public class DictHashField extends DictValue {
 
 	public DictHashField(final String string) {
 		super(string);
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-
 	}
 
 }

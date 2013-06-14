@@ -7,7 +7,7 @@ package com.weibo.lodil;
  * @author tangfulin
  *
  */
-public class DictKey extends DictValue {
+public class DictKey extends DictValue implements DictItem {
 
 	public DictKey() {
 		super();
@@ -21,10 +21,4 @@ public class DictKey extends DictValue {
 		super(bytes);
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-
-	}
 }

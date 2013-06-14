@@ -1,4 +1,4 @@
-package com.weibo.lodil.impl;
+package com.weibo.lodil.mmap.wrap;
 
 import java.nio.CharBuffer;
 

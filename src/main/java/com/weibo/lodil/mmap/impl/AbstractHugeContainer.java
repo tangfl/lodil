@@ -24,7 +24,6 @@ import java.util.List;
 
 import com.weibo.lodil.mmap.api.HugeAllocation;
 
-
 public abstract class AbstractHugeContainer<T, TA extends HugeAllocation> {
 	protected final int allocationSize;
 	protected final int allocationByteSize;
@@ -35,7 +34,7 @@ public abstract class AbstractHugeContainer<T, TA extends HugeAllocation> {
 	protected final List<MappedFileChannel> mfChannels = new ArrayList<MappedFileChannel>();
 	protected long longSize;
 
-	public AbstractHugeContainer(HugeCollectionBuilder<T> hab) {
+	public AbstractHugeContainer(final HugeCollectionBuilder<T> hab) {
 		this.allocationSize = hab.allocationSize();
 		this.setRemoveReturnsNull = hab.setRemoveReturnsNull();
 		this.baseDirectory = hab.baseDirectory();
@@ -47,8 +46,8 @@ public abstract class AbstractHugeContainer<T, TA extends HugeAllocation> {
 		}
 	}
 
-	public void ensureCapacity(long size) {
-		long blocks = (size + allocationSize - 1) / allocationSize;
+	public void ensureCapacity(final long size) {
+		final long blocks = ((size + allocationSize) - 1) / allocationSize;
 		while (blocks > allocations.size()) {
 			MappedFileChannel mfc = null;
 			if (baseDirectory != null) {
@@ -57,10 +56,10 @@ public abstract class AbstractHugeContainer<T, TA extends HugeAllocation> {
 				try {
 					raf = new RandomAccessFile(name, "rw");
 					mfChannels.add(mfc = new MappedFileChannel(raf, allocationByteSize));
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					try {
 						raf.close();
-					} catch (IOException ignored) {
+					} catch (final IOException ignored) {
 					}
 					throw new IllegalStateException("Unable to create allocation " + name, e);
 				}
@@ -83,30 +82,30 @@ public abstract class AbstractHugeContainer<T, TA extends HugeAllocation> {
 		return longSize == 0;
 	}
 
-	public void setSize(long length) {
+	public void setSize(final long length) {
 		ensureCapacity(length);
 		longSize = length;
 	}
 
-	public TA getAllocation(long index) {
+	public TA getAllocation(final long index) {
 		return allocations.get((int) (index / allocationSize));
 	}
 
 	public void clear() {
-		for (TA allocation : allocations) {
+		for (final TA allocation : allocations) {
 			allocation.clear();
 		}
 		longSize = 0;
 	}
 
 	public void compact() {
-		int allocationsNeeded = (int) (longSize() / allocationSize + 1);
+		final int allocationsNeeded = (int) ((longSize() / allocationSize) + 1);
 		while (allocations.size() > allocationsNeeded) {
 			allocations.remove(allocations.size() - 1).destroy();
 		}
 		compactStart();
 		for (int i = 0, allocationsSize = allocations.size(); i < allocationsSize; i++) {
-			compactOnAllocation(allocations.get(i), Math.min(longSize - i * allocationsSize, allocationSize));
+			compactOnAllocation(allocations.get(i), Math.min(longSize - (i * allocationsSize), allocationSize));
 		}
 		compactEnd();
 	}
