@@ -1,5 +1,6 @@
 package com.weibo.lodil.mmap.wrap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.weibo.lodil.DictKey;
@@ -9,12 +10,13 @@ import com.weibo.lodil.mmap.impl.AbstractHugeMap;
 import com.weibo.lodil.mmap.impl.MappedFileChannel;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
-public class DictHugeMap extends AbstractHugeMap<DictKey, DictKeyElement, DictValue, DictValueElement, DictAllocation> {
+public class DictHugeMap extends
+AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, DictAllocation> {
 
 	final Enumerated16FieldModel<String> stringEnumerated16FieldModel = new Enumerated16FieldModel<String>("text", 11,
 			String.class);
 
-	public DictHugeMap(final HugeMapBuilder<DictKey, DictValue> mapBuilder) {
+	public DictHugeMap(final HugeMapBuilder<DictKeyWrap, DictValueWrap> mapBuilder) {
 		super(mapBuilder);
 	}
 
@@ -29,13 +31,13 @@ public class DictHugeMap extends AbstractHugeMap<DictKey, DictKeyElement, DictVa
 	}
 
 	@Override
-	protected DictKey createKeyImpl() {
-		return new DictKey();
+	protected DictKeyWrap createKeyImpl() {
+		return new DictKeyWrap();
 	}
 
 	@Override
-	protected DictValue createValueImpl() {
-		return new DictValue();
+	protected DictValueWrap createValueImpl() {
+		return new DictValueWrap();
 	}
 
 	@Override
@@ -56,23 +58,35 @@ public class DictHugeMap extends AbstractHugeMap<DictKey, DictKeyElement, DictVa
 	}
 
 	public boolean contains(final DictKey key) {
-		return false;
+		final DictKeyWrap wrap = new DictKeyWrap(key);
+		return super.containsKey(wrap);
 	}
 
 	public DictValue get(final DictKey key) {
-		return null;
+		final DictKeyWrap wrap = new DictKeyWrap(key);
+		return super.get(wrap);
 	}
 
-	@Override
 	public DictValue put(final DictKey key, final DictValue value) {
-		return null;
+		final DictKeyWrap kwrap = new DictKeyWrap(key);
+		final DictValueWrap vwrap = new DictValueWrap(value);
+		return super.put(kwrap, vwrap);
 	}
 
 	public boolean mset(final Map<DictKey, DictValue> keyvalues) {
+		final Map<DictKeyWrap, DictValueWrap> wrapMap = new HashMap<DictKeyWrap, DictValueWrap>();
+		for (final DictKey key : keyvalues.keySet()) {
+			final DictKeyWrap kwrap = new DictKeyWrap(key);
+			final DictValueWrap vwrap = new DictValueWrap(keyvalues.get(key));
+			wrapMap.put(kwrap, vwrap);
+		}
+		super.putAll(wrapMap);
 		return true;
 	}
 
 	public boolean remove(final DictKey key) {
+		final DictKeyWrap wrap = new DictKeyWrap(key);
+		super.remove(wrap);
 		return true;
 	}
 

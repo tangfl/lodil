@@ -23,7 +23,7 @@ public class MmapKVDictionary implements KVDictionary {
 
 	public final int size;
 	public final String baseDir;
-	public final HugeMapBuilder<DictKey, DictValue> mapBuilder;
+	public final HugeMapBuilder<DictKeyWrap, DictValueWrap> mapBuilder;
 	public final DictHugeMap dictMap;
 
 	// this is just for test
@@ -34,7 +34,7 @@ public class MmapKVDictionary implements KVDictionary {
 	public MmapKVDictionary(final int size, final String baseDir) {
 		this.size = size;
 		this.baseDir = baseDir;
-		mapBuilder = new HugeMapBuilder<DictKey, DictValue>() {
+		mapBuilder = new HugeMapBuilder<DictKeyWrap, DictValueWrap>() {
 			{
 				allocationSize = size;
 				baseDirectory = baseDir;
@@ -121,7 +121,7 @@ public class MmapKVDictionary implements KVDictionary {
 		}
 		for (int i = 10; i < 100; ++i) {
 			final DictValue value = md.get(new DictKey("key:" + i));
-			if (!value.equals(new DictValue("value" + i))) {
+			if ((value == null) || !value.equals(new DictValue("value" + i))) {
 				System.out.println("BANG!");
 			}
 		}

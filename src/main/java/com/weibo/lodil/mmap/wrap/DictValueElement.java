@@ -2,13 +2,13 @@ package com.weibo.lodil.mmap.wrap;
 
 import com.weibo.lodil.DictItem;
 import com.weibo.lodil.DictKey;
-import com.weibo.lodil.DictValue;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
 
-public class DictValueElement extends AbstractHugeElement<DictValue, DictAllocation> implements HugeElement<DictValue>,
-		DictItem {
+public class DictValueElement extends AbstractHugeElement<DictValueWrap, DictAllocation> implements
+HugeElement<DictValueWrap>,
+DictItem {
 
 	DictAllocation allocation;
 
@@ -29,7 +29,7 @@ public class DictValueElement extends AbstractHugeElement<DictValue, DictAllocat
 		return ((DictHugeMap) container).stringEnumerated16FieldModel.get(allocation.m_string, offset);
 	}
 
-	public void copyOf(final DictValue t) {
+	public void copyOf(final DictValueWrap t) {
 	}
 
 	@Override

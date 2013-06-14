@@ -78,7 +78,7 @@ public class MethodModel<T> {
 					fieldModel = new LongFieldModel(fieldName, fieldNumber);
 				} else if (fieldType == double.class) {
 					fieldModel = new DoubleFieldModel(fieldName, fieldNumber);
-				} else if (Enum.class.isAssignableFrom(fieldType)) {
+				} else if ((fieldType != null) && Enum.class.isAssignableFrom(fieldType)) {
 					final Enum[] values = (Enum[]) fieldType.getEnumConstants();
 					if (values.length < 256) {
 						fieldModel = new Enum8FieldModel(fieldName, fieldNumber, fieldType, values);
@@ -86,13 +86,18 @@ public class MethodModel<T> {
 						fieldModel = new ObjectFieldModel<T>(fieldName, fieldNumber, fieldType);
 					}
 				} else {
-					if (Comparable.class.isAssignableFrom(fieldType)) {
+					if ((fieldType != null) && Comparable.class.isAssignableFrom(fieldType)) {
 						fieldModel = new Enumerated16FieldModel<T>(fieldName, fieldNumber, fieldType);
 					} else {
 						fieldModel = new ObjectFieldModel<T>(fieldName, fieldNumber, fieldType);
 					}
 				}
-				fields.put(fieldName, fieldModel);
+
+				// FIXME ignore all object fields for now, for saving data to
+				// disk
+				if (!(fieldModel instanceof ObjectFieldModel)) {
+					fields.put(fieldName, fieldModel);
+				}
 			}
 			switch (methodType) {
 			case SETTER:

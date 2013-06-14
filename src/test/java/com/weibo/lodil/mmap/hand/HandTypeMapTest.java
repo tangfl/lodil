@@ -41,12 +41,12 @@ public class HandTypeMapTest {
 		final HandTypesKeyImpl key = new HandTypesKeyImpl();
 		final HandTypesImpl value = new HandTypesImpl();
 		final long start = System.nanoTime();
-		final int size = 5000000;
-		for (int i = 0; i < size; i += 2) {
+		final int size = 500;
+		for (int i = 100; i < size; i += 2) {
 			put(map, key, value, i, false);
 			put(map, key, value, i, true);
 		}
-		for (int i = 0; i < size; i += 2) {
+		for (int i = 100; i < size; i += 2) {
 			get(map, key, i, false);
 			get(map, key, i, true);
 		}

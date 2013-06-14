@@ -1,14 +1,14 @@
 package com.weibo.lodil.mmap.wrap;
 
 import com.weibo.lodil.DictItem;
-import com.weibo.lodil.DictKey;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeContainer;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class DictKeyElement extends AbstractHugeElement<DictKey, DictAllocation> implements HugeElement<DictKey>,
+public class DictKeyElement extends AbstractHugeElement<DictKeyWrap, DictAllocation> implements
+HugeElement<DictKeyWrap>,
 DictItem {
 
 	String valueString;
@@ -22,7 +22,7 @@ DictItem {
 		return HugeElementType.KeyElement;
 	}
 
-	public void copyOf(final DictKey t) {
+	public void copyOf(final DictKeyWrap t) {
 		throw new UnsupportedOperationException();
 	}
 
