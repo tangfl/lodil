@@ -33,14 +33,14 @@ public interface KVDictionary extends BasicDictionary {
 	 * 
 	 * @return true if and only if all keys are seted, false otherwise
 	 */
-	public boolean mset(Map<DictKey, DictValue> keys);
+	public boolean mset(Map<DictKey, DictValue> keyvalues);
 
 	/**
 	 * 
 	 * @param key
 	 * @return false and do nothing if key already seted, otherwise true
 	 */
-	public boolean add(DictKey key);
+	public boolean add(DictKey key, DictValue value);
 
 	/**
 	 * 

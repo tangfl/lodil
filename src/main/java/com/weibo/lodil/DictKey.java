@@ -9,6 +9,10 @@ package com.weibo.lodil;
  */
 public class DictKey extends DictValue {
 
+	public DictKey() {
+		super();
+	}
+
 	public DictKey(final String value) {
 		super(value);
 	}

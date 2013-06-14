@@ -12,10 +12,11 @@ import com.weibo.lodil.DictValue;
 import com.weibo.lodil.Dictionary;
 
 /**
+ * 
  * @author tangfulin
- *
+ * 
  */
-public class SSDDictionary implements Dictionary {
+public class MmapDictionary implements Dictionary {
 
 	public DictValue get(final DictKey key) {
 		return null;
@@ -33,7 +34,7 @@ public class SSDDictionary implements Dictionary {
 		return false;
 	}
 
-	public boolean add(final DictKey key) {
+	public boolean add(final DictKey key, final DictValue value) {
 		return false;
 	}
 

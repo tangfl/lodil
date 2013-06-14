@@ -9,6 +9,10 @@ package com.weibo.lodil;
  */
 public class DictHashField extends DictValue {
 
+	public DictHashField() {
+		super();
+	}
+
 	public DictHashField(final byte[] bytes) {
 		super(bytes);
 	}

@@ -33,7 +33,7 @@ public class MemcacheDictionary implements Dictionary {
 		return false;
 	}
 
-	public boolean add(final DictKey key) {
+	public boolean add(final DictKey key, final DictValue value) {
 		return false;
 	}
 

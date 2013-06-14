@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * combind cache and storage impl
+ * combind cache and storage impl, deal with write through or write back stuff
  * 
  * @author tangfulin
  * 
@@ -30,7 +30,7 @@ public class CombindDictionary implements Dictionary {
 		return false;
 	}
 
-	public boolean add(final DictKey key) {
+	public boolean add(final DictKey key, final DictValue value) {
 		return false;
 	}
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.weibo.lodil.cache;
+package com.weibo.lodil.storage;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,15 +15,7 @@ import com.weibo.lodil.Dictionary;
  * @author tangfulin
  *
  */
-public class EhcacheDictionary implements Dictionary {
-
-	public long size() {
-		return 0;
-	}
-
-	public boolean contains(final DictKey key) {
-		return false;
-	}
+public class SsdDictionary implements Dictionary {
 
 	public DictValue get(final DictKey key) {
 		return null;
@@ -63,6 +55,14 @@ public class EhcacheDictionary implements Dictionary {
 
 	public long decrBy(final DictKey key, final long num) {
 		return 0;
+	}
+
+	public long size() {
+		return 0;
+	}
+
+	public boolean contains(final DictKey key) {
+		return false;
 	}
 
 	public long llen(final DictKey key) {
