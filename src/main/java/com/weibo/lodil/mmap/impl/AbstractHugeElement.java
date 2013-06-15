@@ -16,6 +16,7 @@ package com.weibo.lodil.mmap.impl;
  *    limitations under the License.
  */
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeAllocation;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
@@ -40,6 +41,8 @@ public abstract class AbstractHugeElement<T, TA extends HugeAllocation> implemen
 	}
 
 	public void index(long n) {
+		LOG.info(this.toString() + " n:" + n);
+		
 		final int allocationSize = container.allocationSize;
 		if (n / allocationSize != index() / allocationSize) {
 			index = n;

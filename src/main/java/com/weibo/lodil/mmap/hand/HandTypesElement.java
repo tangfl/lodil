@@ -22,6 +22,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.annotation.ElementType;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.ObjectTypes;
 import com.weibo.lodil.mmap.impl.AbstractHugeArrayList;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
@@ -158,10 +159,11 @@ public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAl
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
-				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
-				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
-				+ getElementType() + ", string='" + getString() + '\'' + '}';
+//		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
+//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
+//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
+//				+ getElementType() + ", string='" + getString() + '\'' + '}';
+		return "HandTypesElement{int=" + getInt() +  '}';
 	}
 
 	@Override
@@ -229,6 +231,8 @@ public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAl
 	}
 
 	public void copyOf(final HandTypes t) {
+		LOG.debug(t.toString());
+		
 		setBoolean(t.getBoolean());
 		setBoolean2(t.getBoolean2());
 		setByte2(t.getByte2());

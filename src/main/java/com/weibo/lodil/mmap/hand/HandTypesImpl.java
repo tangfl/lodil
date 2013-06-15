@@ -22,6 +22,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.annotation.ElementType;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.ObjectTypes;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
@@ -199,6 +200,8 @@ public class HandTypesImpl implements HandTypes, HugeElement<HandTypes>, Externa
 	}
 
 	public void copyOf(final HandTypes t) {
+		LOG.debug(t.toString());
+		
 		setBoolean(t.getBoolean());
 		setBoolean2(t.getBoolean2());
 		setByte(t.getByte());
@@ -220,10 +223,11 @@ public class HandTypesImpl implements HandTypes, HugeElement<HandTypes>, Externa
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
-				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
-				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
-				+ getElementType() + ", string='" + getString() + '\'' + '}';
+//		return "HandTypesValueImpl{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
+//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
+//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
+//				+ getElementType() + ", string='" + getString() + '\'' + '}';
+		return "HandTypes(Value)Impl{int=" + getInt() + "} hash:" + longHashCode();
 	}
 
 	@Override

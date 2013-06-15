@@ -7,11 +7,12 @@ import java.io.ObjectOutput;
 
 import com.weibo.lodil.DictItem;
 import com.weibo.lodil.DictKey;
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
-public class DictKeyWrap extends DictKey implements HugeElement<DictKey>, Externalizable {
+public class DictKeyWrap extends DictKey implements DictItem, HugeElement<DictKey>, Externalizable {
 
 	public DictKeyWrap() {
 		super();
@@ -34,20 +35,23 @@ public class DictKeyWrap extends DictKey implements HugeElement<DictKey>, Extern
 	}
 
 	public void copyOf(final DictKey t) {
+		LOG.debug(t.toString());
 		this.setString(t.getString());
 	}
 
 	public void index(final long n) {
+		LOG.debug(this.toString());
 		throw new UnsupportedOperationException();
 	}
 
 	public long index() {
+		LOG.debug(this.toString());
 		return -1;
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass() + ":" + getString();
+		return this.getClass() + ":" + getString() + " hash:" + getString().hashCode();
 	}
 
 	@Override

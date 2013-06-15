@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.model.BooleanFieldModel;
@@ -65,6 +66,8 @@ public class HandTypesKeyImpl implements HandTypesKey, HugeElement<HandTypes>, E
 	}
 
 	public void copyOf(final HandTypes t) {
+		LOG.debug(t.toString());
+		
 		setBoolean(t.getBoolean());
 		setInt(t.getInt());
 	}
@@ -75,7 +78,7 @@ public class HandTypesKeyImpl implements HandTypesKey, HugeElement<HandTypes>, E
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "int=" + getInt() + ", boolean=" + getBoolean() + '}';
+		return "HandTypesKeyImpl{" + "int=" + getInt() + ", boolean=" + getBoolean() + '}';
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.weibo.lodil.mmap.wrap;
 
 import com.weibo.lodil.DictItem;
-import com.weibo.lodil.DictKey;
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
@@ -10,10 +10,12 @@ public class DictValueElement extends AbstractHugeElement<DictValueWrap, DictAll
 HugeElement<DictValueWrap>,
 DictItem {
 
+	String valueString = "";
 	DictAllocation allocation;
 
 	public DictValueElement(final DictHugeMap hugeMap, final long n) {
 		super(hugeMap, n);
+		LOG.debug("new DictValueElement with n:" + n);
 	}
 
 	@Override
@@ -30,26 +32,41 @@ DictItem {
 	}
 
 	public void copyOf(final DictValueWrap t) {
+		LOG.debug(t.toString());
+		setString(t.getString());
 	}
 
 	@Override
 	public void index(final long n) {
+		LOG.debug(this.toString() + " n:" + n);
+		super.index(n);
 	}
 
 	@Override
 	public long index() {
-		return 0;
+		LOG.debug(this.toString());
+		return super.index();
+	}
+
+	public int hashCode(){
+		return getString().hashCode();
 	}
 
 	public long longHashCode() {
-		return 0;
+		LOG.debug(this.toString());
+		return hashCode();
 	}
 
-	public void copyOf(final DictKey t) {
-	}
 
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
+		LOG.debug("updateAllocation0:" + allocationSize);
+		allocation = container.getAllocation(index);
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass() + ":" + getString() + " hash:" + getString().hashCode();
 	}
 
 }

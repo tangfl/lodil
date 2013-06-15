@@ -16,6 +16,7 @@ package com.weibo.lodil.mmap.hand;
  *    limitations under the License.
  */
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeContainer;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
@@ -56,7 +57,7 @@ public class HandTypesKeyElement extends AbstractHugeElement<HandTypesKey, HandT
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "int=" + getInt() + ", boolean=" + getBoolean() + '}';
+		return "HandTypesKeyElement{" + "int=" + getInt() + ", boolean=" + getBoolean() + '}';
 	}
 
 	@Override
@@ -90,6 +91,8 @@ public class HandTypesKeyElement extends AbstractHugeElement<HandTypesKey, HandT
 	}
 
 	public void copyOf(final HandTypesKey t) {
+		LOG.debug(t.toString());
+		
 		throw new UnsupportedOperationException();
 	}
 
