@@ -157,6 +157,7 @@ public class HandTypesValueElement extends AbstractHugeElement<HandTypes, HandTy
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
 		allocation = container.getAllocation(index);
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
 
 	@Override

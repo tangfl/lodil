@@ -58,7 +58,7 @@ AbstractHugeMap<HandTypesKey, HandTypesKeyElement, HandTypes, HandTypesValueElem
 
 	@Override
 	protected HandTypes createValueImpl() {
-		return new HandTypesImpl();
+		return new HandTypesValueImpl();
 	}
 
 	@Override

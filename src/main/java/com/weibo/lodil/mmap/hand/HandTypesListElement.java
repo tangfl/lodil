@@ -40,11 +40,11 @@ import com.weibo.lodil.mmap.model.LongFieldModel;
 import com.weibo.lodil.mmap.model.ObjectFieldModel;
 import com.weibo.lodil.mmap.model.ShortFieldModel;
 
-public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAllocation> implements HandTypes,
+public class HandTypesListElement extends AbstractHugeElement<HandTypes, HandTypesAllocation> implements HandTypes,
 		Externalizable {
 	HandTypesAllocation allocation;
 
-	public HandTypesElement(final AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesElement> list, final long n) {
+	public HandTypesListElement(final AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesListElement> list, final long n) {
 		super(list, n);
 	}
 
@@ -238,8 +238,8 @@ public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAl
 		setByte2(t.getByte2());
 		setA(getA());
 
-		if (t instanceof HandTypesElement) {
-			final HandTypesElement mte = (HandTypesElement) t;
+		if (t instanceof HandTypesListElement) {
+			final HandTypesListElement mte = (HandTypesListElement) t;
 			if (mte.container == container) {
 
 				allocation.m_byte.put(offset, mte.allocation.m_byte.get(mte.offset));

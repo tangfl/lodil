@@ -26,25 +26,27 @@ import org.junit.Test;
 import com.weibo.lodil.mmap.HugeMapBuilder;
 
 public class HandTypeMapTest {
-	public static final String TEMPORARY_SPACE = System.getProperty("java.io.tmpdir");
+	public static final String baseDir = System.getProperty("java.io.tmpdir");
 
 	@Test
 	public void putGetSize() {
 		final HugeMapBuilder<HandTypesKey, HandTypes> dummy = new HugeMapBuilder<HandTypesKey, HandTypes>() {
 			{
 				allocationSize = 64 * 1024;
+				baseDirectory = baseDir;
 				setRemoveReturnsNull = true;
 			}
 		};
 
 		final HandTypesMap map = new HandTypesMap(dummy);
 		final HandTypesKeyImpl key = new HandTypesKeyImpl();
-		final HandTypesImpl value = new HandTypesImpl();
+		final HandTypesValueImpl value = new HandTypesValueImpl();
 		final long start = System.nanoTime();
 		final int size = 110;
 		for (int i = 100; i < size; i += 1) {
 			put(map, key, value, i, false);
-			//put(map, key, value, i, true);
+			put(map, key, value, i, true);
+			//put2(map, key, value, i, false);
 		}
 		for (int i = 100; i < size; i += 1) {
 			get(map, key, i, false);
@@ -60,7 +62,7 @@ public class HandTypeMapTest {
 		System.out.println(Arrays.toString(map.capacities()));
 	}
 
-	private static void put(final HandTypesMap map, final HandTypesKeyImpl key, final HandTypesImpl value, final int i, final boolean flag) {
+	static void put(final HandTypesMap map, final HandTypesKeyImpl key, final HandTypesValueImpl value, final int i, final boolean flag) {
 		final int k = i;
 		key.setBoolean(flag);
 		key.setInt(k);
@@ -72,24 +74,47 @@ public class HandTypeMapTest {
 //			map.put(key, value);
 //			assertEquals(size + 1, map.size());
 //		}
-//		HandTypes ht = map.get(key);
-//		if (ht == null) {
-//			ht = map.get(key);
+		HandTypes ht = map.get(key);
+		if (ht == null) {
+			ht = map.get(key);
+		}
+		assertEquals(i, ht.getInt());
+//		if (flag != ht.getBoolean()) {
+//			assertEquals(flag, ht.getBoolean());
 //		}
-//		assertEquals(i, ht.getInt());
+	}
+	
+	// key value not equal
+	static void put2(final HandTypesMap map, final HandTypesKeyImpl key, final HandTypesValueImpl value, final int i, final boolean flag) {
+		final int k = i;
+		key.setBoolean(flag);
+		key.setInt(k);
+		value.setBoolean(!flag);
+		value.setInt(k * 2);
+		final int size = map.size();
+		map.put(key, value);
+//		if ((size + 1) != map.size()) {
+//			map.put(key, value);
+//			assertEquals(size + 1, map.size());
+//		}
+		HandTypes ht = map.get(key);
+		if (ht == null) {
+			ht = map.get(key);
+		}
+		assertEquals(i * 2, ht.getInt());
 //		if (flag != ht.getBoolean()) {
 //			assertEquals(flag, ht.getBoolean());
 //		}
 	}
 
-	private static void get(final HandTypesMap map, final HandTypesKeyImpl key, final int i, final boolean flag) {
+	static void get(final HandTypesMap map, final HandTypesKeyImpl key, final int i, final boolean flag) {
 		// final int k = i;
 		key.setBoolean(flag);
 		key.setInt(i);
 		final HandTypes ht = map.get(key);
 		assertEquals(i, ht.getInt());
 		if (flag != ht.getBoolean()) {
-			assertEquals(flag, ht.getBoolean());
+			assertEquals(!flag, ht.getBoolean());
 		}
 	}
 }

@@ -40,7 +40,7 @@ import com.weibo.lodil.mmap.model.LongFieldModel;
 import com.weibo.lodil.mmap.model.ObjectFieldModel;
 import com.weibo.lodil.mmap.model.ShortFieldModel;
 
-public class HandTypesImpl implements HandTypes, HugeElement<HandTypes>, Externalizable {
+public class HandTypesValueImpl implements HandTypes, HugeElement<HandTypes>, Externalizable {
 	private boolean m_boolean;
 	private Boolean m_boolean2;
 	private byte m_byte;
@@ -227,7 +227,7 @@ public class HandTypesImpl implements HandTypes, HugeElement<HandTypes>, Externa
 //				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
 //				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
 //				+ getElementType() + ", string='" + getString() + '\'' + '}';
-		return "HandTypes(Value)Impl{int=" + getInt() + "} hash:" + longHashCode();
+		return "HandTypesValueImpl{int=" + getInt() + "} hash:" + longHashCode();
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public class HandTypesImpl implements HandTypes, HugeElement<HandTypes>, Externa
 			return false;
 		}
 
-		final HandTypesElement that = (HandTypesElement) o;
+		final HandTypesListElement that = (HandTypesListElement) o;
 
 		if (getBoolean() != that.getBoolean()) {
 			return false;

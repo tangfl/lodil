@@ -10,7 +10,6 @@ public class DictValueElement extends AbstractHugeElement<DictValueWrap, DictAll
 HugeElement<DictValueWrap>,
 DictItem {
 
-	String valueString = "";
 	DictAllocation allocation;
 
 	public DictValueElement(final DictHugeMap hugeMap, final long n) {
@@ -24,11 +23,14 @@ DictItem {
 	}
 
 	public void setString(final String text) {
-		((DictHugeMap) container).stringEnumerated16FieldModel.set(allocation.m_string, offset, text);
+		LOG.debug(text + " setTo " + allocation.valueBuffer + " at " + offset);
+		((DictHugeMap) container).stringModelBuffer.set(allocation.valueBuffer, offset, text);
 	}
 
 	public String getString() {
-		return ((DictHugeMap) container).stringEnumerated16FieldModel.get(allocation.m_string, offset);
+		final String result = ((DictHugeMap) container).stringModelBuffer.get(allocation.valueBuffer, offset);
+		LOG.debug(result + " getFrom " + allocation.valueBuffer + " at " + offset);
+		return result;
 	}
 
 	public void copyOf(final DictValueWrap t) {
@@ -38,13 +40,13 @@ DictItem {
 
 	@Override
 	public void index(final long n) {
-		LOG.debug(this.toString() + " n:" + n);
+		//LOG.debug(this.toString() + " n:" + n);
 		super.index(n);
 	}
 
 	@Override
 	public long index() {
-		LOG.debug(this.toString());
+		//LOG.debug(this.toString());
 		return super.index();
 	}
 
@@ -60,8 +62,8 @@ DictItem {
 
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
-		LOG.debug("updateAllocation0:" + allocationSize);
 		allocation = container.getAllocation(index);
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
 	
 	@Override

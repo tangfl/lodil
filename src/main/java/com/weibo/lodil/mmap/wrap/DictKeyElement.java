@@ -12,11 +12,12 @@ public class DictKeyElement extends AbstractHugeElement<DictKeyWrap, DictAllocat
 HugeElement<DictKeyWrap>,
 DictItem {
 
-	String valueString = "";
 	DictAllocation allocation;
+	DictHugeMap hugeMap;
 
 	public DictKeyElement(final DictHugeMap hugeMap, final long n) {
 		super((AbstractHugeContainer) hugeMap, n);
+		this.hugeMap = hugeMap;
 		LOG.debug("new DictKeyElement with n:" + n);
 	}
 
@@ -32,20 +33,8 @@ DictItem {
 
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
-		LOG.debug("updateAllocation0:" + allocationSize);
 		allocation = container.getAllocation(index);
-	}
-	
-	@Override
-	public void index(final long n) {
-		LOG.debug(this.toString() + " n:" + n);
-		super.index(n);
-	}
-
-	@Override
-	public long index() {
-		LOG.debug(this.toString());
-		return super.index();
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
 	
 	public int hashCode(){
@@ -57,11 +46,28 @@ DictItem {
 	}
 
 	public String getString() {
-		return valueString;
+		final String result = hugeMap.stringModelBuffer.get(allocation.keyBuffer, offset);
+		LOG.debug(result + " getFrom " + allocation.keyBuffer + " at " + offset);
+		return result;
 	}
 
-	public void setString(final String s) {
-		this.valueString = s;
+	public void setString(final String text) {
+		LOG.debug(text + " setTo " + allocation.keyBuffer + " at " + offset);
+		hugeMap.stringModelBuffer.set(allocation.keyBuffer, offset, text);
+	}
+	
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if ((o == null) || !(o instanceof DictItem)) {
+			return false;
+		}
+
+		final DictItem that = (DictItem) o;
+
+		return that.getString().equals(getString());
 	}
 	
 	@Override

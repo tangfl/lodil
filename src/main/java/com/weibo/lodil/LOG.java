@@ -9,6 +9,10 @@ public class LOG {
 	public static void info(String s) {
 		print("[INFO]" + s);
 	}
+	
+	public static void warn(String s) {
+		print("[WARN]" + s);
+	}
 
 	public static void print(String s) {
 		String caller = getCaller();

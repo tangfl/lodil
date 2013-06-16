@@ -53,6 +53,7 @@ public class HandTypesKeyElement extends AbstractHugeElement<HandTypesKey, HandT
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
 		allocation = container.getAllocation(index);
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class HandTypesKeyElement extends AbstractHugeElement<HandTypesKey, HandT
 
 	public void copyOf(final HandTypesKey t) {
 		LOG.debug(t.toString());
-		
+
 		throw new UnsupportedOperationException();
 	}
 
