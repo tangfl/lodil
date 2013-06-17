@@ -67,7 +67,7 @@ public class HandTypesKeyImpl implements HandTypesKey, HugeElement<HandTypes>, E
 
 	public void copyOf(final HandTypes t) {
 		LOG.debug(t.toString());
-		
+
 		setBoolean(t.getBoolean());
 		setInt(t.getInt());
 	}
@@ -109,5 +109,10 @@ public class HandTypesKeyImpl implements HandTypesKey, HugeElement<HandTypes>, E
 
 	public long longHashCode() {
 		return (getInt() * 31L) + (getBoolean() ? 1 : 0);
+	}
+
+	public void recycle() {
+		m_boolean = false;
+		m_int = -1;
 	}
 }

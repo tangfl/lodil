@@ -4,7 +4,7 @@ public interface DictEntry {
 
 	// connect key and value
 	// TODO escape this char when found in key or value
-	public final String connector = "|";
+	public final String connector = "_";
 
 	public String getKey();
 

@@ -201,7 +201,7 @@ public class HandTypesValueImpl implements HandTypes, HugeElement<HandTypes>, Ex
 
 	public void copyOf(final HandTypes t) {
 		LOG.debug(t.toString());
-		
+
 		setBoolean(t.getBoolean());
 		setBoolean2(t.getBoolean2());
 		setByte(t.getByte());
@@ -223,10 +223,10 @@ public class HandTypesValueImpl implements HandTypes, HugeElement<HandTypes>, Ex
 
 	@Override
 	public String toString() {
-//		return "HandTypesValueImpl{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
-//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
-//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
-//				+ getElementType() + ", string='" + getString() + '\'' + '}';
+		//		return "HandTypesValueImpl{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
+		//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
+		//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
+		//				+ getElementType() + ", string='" + getString() + '\'' + '}';
 		return "HandTypesValueImpl{int=" + getInt() + "} hash:" + longHashCode();
 	}
 
@@ -292,5 +292,9 @@ public class HandTypesValueImpl implements HandTypes, HugeElement<HandTypes>, Ex
 				.hashCode(getFloat())) * 31L) + LongFieldModel.hashCode(getLong())) * 31L) + DoubleFieldModel
 				.hashCode(getDouble())) * 31L) + Enum8FieldModel.hashCode(getElementType()))
 				* 31L) + (Enumerated16FieldModel.hashCode(getString()) * 31L) + ObjectFieldModel.hashCode(getA()));
+	}
+
+	// TODO
+	public void recycle() {
 	}
 }

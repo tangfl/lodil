@@ -33,6 +33,7 @@ import com.weibo.lodil.mmap.HugeMapBuilder;
 import com.weibo.lodil.mmap.api.HugeAllocation;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeMap;
+import com.weibo.lodil.mmap.api.Recycleable;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractHugeMap<K, KE extends HugeElement<K>, V, VE extends HugeElement<V>, MA extends HugeAllocation>
@@ -85,24 +86,27 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		switch (((HugeElement) o).hugeElementType()) {
 		case Element:
 			if (valueElements.size() < allocationSize) {
-				//valueElements.add((VE) o);
+				valueElements.add((VE) o);
 			}
 			break;
 		case BeanImpl:
 			if (valueImpls.size() < allocationSize) {
-				//valueImpls.add((V) o);
+				valueImpls.add((V) o);
 			}
 			break;
 		case KeyElement:
 			if (keyElements.size() < allocationSize) {
-				//keyElements.add((KE) o);
+				keyElements.add((KE) o);
 			}
 			break;
 		case KeyImpl:
 			if (keyImpls.size() < allocationSize) {
-				//keyImpls.add((K) o);
+				keyImpls.add((K) o);
 			}
 			break;
+		}
+		if (o instanceof Recycleable) {
+			((Recycleable) o).recycle();
 		}
 	}
 
@@ -132,23 +136,29 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		final IntBuffer keysBuffer = keysBuffers[loHash];
 
 		final KE ke = acquireKeyElement(0);
-		//final VE ve = acquireValueElement(0);
-		//LOG.debug("ke:" + ke + " ve:" + ve);
 
 		try {
 			for (int i = 0, len = keysBuffer.limit(); i < len; i++) {
 				final int index = (hiHash + i) % len;
-				final int i1 = keysBuffer.get(index);
+				final int pointer = keysBuffer.get(index);
+				final int location = pointer - 1;
 
-				LOG.debug(loHash + " keysBuffer.get:" + index + ":" + i1);
+				// LOG.debug(loHash + " keysBuffer.get:" + index + ":" +
+				// pointer);
 
-				if (i1 == 0) {
+				// pointer == 0; means key not exist
+				if (pointer == 0) {
+					// if free; means we are looking for free space, so it is
+					// the right time to set proper new pointer: the value of
+					// the pointer is the start location(-1) in buffer(@see
+					// DictAllocation.keyBuffer) of the DictEntry
 					if (free) {
 						final int loc = size();
 						ensureCapacity(loc + 1);
 						keysBuffer.put(index, loc + 1);
 
-						LOG.debug(loHash + " keysBuffer.put:" + index + ":" + (loc + 1));
+						// LOG.debug(loHash + " keysBuffer.put:" + index + ":" +
+						// (loc + 1));
 
 						if (keysBuffer.position() >= ((keysBuffer.limit() * 3) / 4)) {
 							growBuffer(loHash);
@@ -164,16 +174,25 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 					}
 					return -1;
 				}
-				ke.index(i1 - 1);
+
+				ke.index(location);
 				if (ke.equals(key)) {
+					// if remove; means we are looking for a exist one, and want
+					// to remove it (if not found, we do not need to do any
+					// remove)
 					if (remove) {
 						keysBuffer.put((hiHash + i) % len, 0);
 						// used field.
 						keysBuffer.position(keysBuffer.position() - 1);
 					}
-					return i1 - 1;
+					return location;
 				}
+
+				// found a location, but key not equals?
+				// for ++i, check next possiable location
 			}
+
+			// we checked all possiable location, but still not found
 			return -1;
 		} finally {
 			recycle(ke);

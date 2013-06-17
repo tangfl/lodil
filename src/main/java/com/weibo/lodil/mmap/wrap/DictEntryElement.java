@@ -12,8 +12,8 @@ import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
-public class DictEntryElement extends AbstractHugeElement<DictEntryImpl, DictAllocation> implements
-HugeElement<DictEntryImpl>, Externalizable, DictEntry {
+public class DictEntryElement extends AbstractHugeElement<DictEntry, DictAllocation> implements HugeElement<DictEntry>,
+Externalizable, DictEntry {
 
 	DictAllocation allocation;
 	DictHugeEntryMap hugeMap;
@@ -24,11 +24,11 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 	public DictEntryElement(final DictHugeEntryMap hugeMap, final long n) {
 		super(hugeMap, n);
 		this.hugeMap = hugeMap;
-		LOG.debug("new DictEntryElement with n:" + n);
+		// LOG.debug(this.getClass() + " new with n:" + n);
 	}
 
 	public String getKey() {
-		getkeyValue();
+		getkeyValue(false);
 		return key.getString();
 	}
 
@@ -38,7 +38,7 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 	}
 
 	public String getValue() {
-		getkeyValue();
+		getkeyValue(false);
 		return value.getString();
 	}
 
@@ -49,7 +49,7 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 
 	private void setkeyValue() {
 		if ((key == null) || (value == null)) {
-			LOG.debug(" ignore set: " + key + " : " + value);
+			// LOG.debug(" ignore set: " + key + " : " + value);
 			return;
 		}
 		final String keyvalue = getKeyValueString();
@@ -57,24 +57,22 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 		hugeMap.stringModelBuffer.set(allocation.keyBuffer, offset, keyvalue);
 	}
 
-	// XXX be attention not to make a call cycle
-	private String getKeyValueString() {
-		getkeyValue();
+	protected String getKeyValueString() {
 		final String keyvalue = (key == null ? "" : key.getString()) + connector
 				+ (value == null ? "" : value.getString());
 		return keyvalue;
 	}
 
-	private void getkeyValue() {
-		if ((key == null) || (value == null)) {
+	protected void getkeyValue(final boolean forceGetFromBuffer) {
+		if (forceGetFromBuffer || ((key == null) && (value == null))) {
 			final String result = hugeMap.stringModelBuffer.get(allocation.keyBuffer, offset);
 			initFromString(result);
 
-			LOG.debug(result + " getFrom " + allocation.keyBuffer + " at " + offset);
+			LOG.debug(result + " getFrom " + allocation.keyBuffer.hashCode() + " at " + offset);
 		}
 	}
 
-	private void initFromString(final String result) {
+	protected void initFromString(final String result) {
 		final String[] parts = result.split(connector);
 
 		assert parts.length == 2;
@@ -92,7 +90,7 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 		initFromString(Enumerated16FieldModel.read(in, String.class));
 	}
 
-	public void copyOf(final DictEntryImpl t) {
+	public void copyOf(final DictEntry t) {
 		LOG.debug(t.toString());
 		setKey(t.getKey());
 		setValue(t.getValue());
@@ -101,8 +99,6 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 	// when in reuse, index to anther place means must read key/value again
 	@Override
 	public void index(final long n) {
-		key = null;
-		value = null;
 		super.index(n);
 	}
 
@@ -123,7 +119,8 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
 		allocation = container.getAllocation(index);
-		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
+		// LOG.debug("updateAllocation0:" + allocationSize + " now:" +
+		// allocation);
 	}
 
 	@Override
@@ -143,6 +140,12 @@ HugeElement<DictEntryImpl>, Externalizable, DictEntry {
 		final DictEntry that = (DictEntry) o;
 
 		return that.getKey().equals(getKey()) && that.getValue().equals(getValue());
+	}
+
+	@Override
+	public void recycle() {
+		key = null;
+		value = null;
 	}
 
 }

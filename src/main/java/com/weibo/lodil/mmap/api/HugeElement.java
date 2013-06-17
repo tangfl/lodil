@@ -16,7 +16,7 @@ package com.weibo.lodil.mmap.api;
  *    limitations under the License.
  */
 
-public interface HugeElement<T> {
+public interface HugeElement<T> extends Recycleable {
 	HugeElementType hugeElementType();
 
 	void copyOf(T t);

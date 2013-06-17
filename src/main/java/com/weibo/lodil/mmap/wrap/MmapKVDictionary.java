@@ -24,7 +24,7 @@ public class MmapKVDictionary implements KVDictionary {
 
 	public final int size;
 	public final String baseDir;
-	public final HugeMapBuilder<DictEntryImpl, DictEntryImpl> mapBuilder;
+	public final HugeMapBuilder<DictEntry, DictEntry> mapBuilder;
 	public final DictHugeEntryMap dictMap;
 
 	// this is just for test
@@ -35,7 +35,7 @@ public class MmapKVDictionary implements KVDictionary {
 	public MmapKVDictionary(final int size, final String baseDir) {
 		this.size = size;
 		this.baseDir = baseDir;
-		mapBuilder = new HugeMapBuilder<DictEntryImpl, DictEntryImpl>() {
+		mapBuilder = new HugeMapBuilder<DictEntry, DictEntry>() {
 			{
 				allocationSize = size;
 				baseDirectory = baseDir;
@@ -118,7 +118,7 @@ public class MmapKVDictionary implements KVDictionary {
 	public static void main(final String[] args) {
 		LOG.info("File at: " + TEMPORARY_SPACE);
 		final MmapKVDictionary md = new MmapKVDictionary();
-		final int size = 110;
+		final int size = 102;
 
 		for (int i = 100; i < size; ++i) {
 			final long mapsize = md.size();

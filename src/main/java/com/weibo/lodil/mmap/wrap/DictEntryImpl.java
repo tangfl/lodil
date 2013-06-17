@@ -83,7 +83,7 @@ public class DictEntryImpl implements DictEntry, HugeElement<DictEntry>, Externa
 		return hashCode();
 	}
 
-	private String getKeyValueString() {
+	protected String getKeyValueString() {
 		return getKey() + connector + getValue();
 	}
 
@@ -121,6 +121,11 @@ public class DictEntryImpl implements DictEntry, HugeElement<DictEntry>, Externa
 	@Override
 	public String toString() {
 		return this.getClass() + ":" + getKeyValueString();
+	}
+
+	public void recycle() {
+		key = null;
+		value = null;
 	}
 
 }

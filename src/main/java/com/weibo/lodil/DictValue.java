@@ -4,6 +4,7 @@
 package com.weibo.lodil;
 
 
+
 /**
  * @author tangfulin
  *
@@ -39,6 +40,20 @@ public class DictValue implements DictItem {
 	@Override
 	public String toString() {
 		return this.getClass() + ":" + getString();
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if ((o == null) || !(o instanceof DictValue)) {
+			return false;
+		}
+
+		final DictValue that = (DictValue) o;
+
+		return that.getString().equals(getString());
 	}
 
 }
