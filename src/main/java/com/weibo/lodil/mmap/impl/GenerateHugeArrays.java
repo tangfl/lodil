@@ -89,7 +89,7 @@ import com.weibo.lodil.mmap.model.FieldModel;
 import com.weibo.lodil.mmap.model.ObjectFieldModel;
 import com.weibo.lodil.mmap.model.TypeModel;
 
-@SuppressWarnings({ "rawtypes", "unused", "restriction" })
+@SuppressWarnings({ "rawtypes", "unused" })
 public enum GenerateHugeArrays {
 	// enum end with ; and then start methods
 	;

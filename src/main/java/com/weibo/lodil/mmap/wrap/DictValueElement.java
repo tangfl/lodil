@@ -6,6 +6,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 import com.weibo.lodil.DictItem;
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
@@ -43,20 +44,6 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 		setString(t.getString());
 	}
 
-	@Override
-	public int hashCode() {
-		return getString().hashCode();
-	}
-
-	public long longHashCode() {
-		return hashCode();
-	}
-
-	@Override
-	protected void updateAllocation0(final int allocationSize) {
-		allocation = container.getAllocation(index);
-	}
-
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		Enumerated16FieldModel.write(out, String.class, getString());
 	}
@@ -77,6 +64,7 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 		return super.index();
 	}
 
+	@Override
 	public int hashCode(){
 		return getString().hashCode();
 	}
@@ -85,7 +73,6 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 		LOG.debug(this.toString());
 		return hashCode();
 	}
-
 
 	@Override
 	protected void updateAllocation0(final int allocationSize) {

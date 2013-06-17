@@ -10,12 +10,12 @@ import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 public class DictAllocation implements HugeAllocation {
 
 	CharBuffer keyBuffer;
-	CharBuffer valueBuffer;
+	// CharBuffer valueBuffer;
 
 	public DictAllocation(final int size, final MappedFileChannel mfc) {
 		keyBuffer = Enumerated16FieldModel.newArrayOfField(size, mfc);
 		//valueBuffer = Enumerated16FieldModel.newArrayOfField(size, mfc);
-		valueBuffer = keyBuffer;
+		// valueBuffer = keyBuffer;
 	}
 
 	// TODO all set to null?
@@ -25,7 +25,7 @@ public class DictAllocation implements HugeAllocation {
 
 	public void destroy() {
 		GenerateHugeArrays.clean(keyBuffer);
-		GenerateHugeArrays.clean(valueBuffer);
+		// GenerateHugeArrays.clean(valueBuffer);
 	}
 
 	@Override
@@ -33,9 +33,10 @@ public class DictAllocation implements HugeAllocation {
 		super.finalize();
 		destroy();
 	}
-	
+
+	@Override
 	public String toString(){
-		return this.getClass() + " keyBuffer:" + keyBuffer + " valueBuffer:" + valueBuffer;
+		return this.getClass() + " keyBuffer:" + keyBuffer;
 	}
 
 	/**

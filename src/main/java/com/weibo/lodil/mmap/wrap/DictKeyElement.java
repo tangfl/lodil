@@ -41,10 +41,6 @@ HugeElement<DictKeyWrap>, Externalizable, DictItem {
 		allocation = container.getAllocation(index);
 		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
-	
-	public int hashCode(){
-		return getString().hashCode();
-	}
 
 	@Override
 	public int hashCode() {
