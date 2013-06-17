@@ -29,7 +29,7 @@ public class MmapKVDictionary implements KVDictionary {
 
 	// this is just for test
 	public MmapKVDictionary() {
-		this(64 * 1024, TEMPORARY_SPACE);
+		this(1024 * 1024, TEMPORARY_SPACE);
 	}
 
 	public MmapKVDictionary(final int size, final String baseDir) {
@@ -117,17 +117,25 @@ public class MmapKVDictionary implements KVDictionary {
 	 */
 	public static void main(final String[] args) {
 		LOG.info("File at: " + TEMPORARY_SPACE);
-		final MmapKVDictionary md = new MmapKVDictionary();
-		final int size = 102;
+		final long start = System.currentTimeMillis();
 
-		for (int i = 100; i < size; ++i) {
+		final MmapKVDictionary md = new MmapKVDictionary();
+
+		final long init = System.currentTimeMillis();
+
+		final int size = 300;
+
+		for (int i = 1; i < size; ++i) {
 			final long mapsize = md.size();
 			md.set(new DictKey("key:" + i), new DictValue("value:" + i));
 			if (md.size() != (mapsize + 1)){
 				LOG.warn("map size error:" + md.size() + " expect:" + (mapsize + 1));
 			}
 		}
-		for (int i = 100; i < size; ++i) {
+
+		final long set = System.currentTimeMillis();
+
+		for (int i = 1; i < size; ++i) {
 			final DictKey key = new DictKey("key:" + i);
 			final DictValue value = md.get(key);
 			if (value == null){
@@ -137,7 +145,11 @@ public class MmapKVDictionary implements KVDictionary {
 				System.out.println("BANG!");
 			}
 		}
-		System.out.println("BINGGO!");
+
+		final long get = System.currentTimeMillis();
+
+		System.out.printf("init: %,d ms; set: %,d ms; get: %,d ms \n", (init - start), (set - init), (get - set));
+		System.out.printf("Took an average of %,d ms to write/read", (get - init) / size);
 	}
 
 }

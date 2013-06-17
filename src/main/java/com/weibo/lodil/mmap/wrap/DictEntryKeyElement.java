@@ -20,7 +20,7 @@ public class DictEntryKeyElement extends DictEntryElement {
 
 	@Override
 	protected String getKeyValueString() {
-		getkeyValue(false);
+		// getkeyValue(false);
 		return key == null ? "" : key.getString();
 	}
 

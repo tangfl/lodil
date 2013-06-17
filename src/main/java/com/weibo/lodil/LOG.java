@@ -3,7 +3,7 @@ package com.weibo.lodil;
 public class LOG {
 
 	public static void debug(final String s) {
-		print("[DBUG]" + s);
+		// print("[DBUG]" + s);
 	}
 
 	public static void info(final String s) {
