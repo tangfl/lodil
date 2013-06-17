@@ -6,6 +6,7 @@ package com.weibo.lodil.mmap.wrap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import com.weibo.lodil.DictKey;
 import com.weibo.lodil.DictValue;
@@ -123,20 +124,38 @@ public class MmapKVDictionary implements KVDictionary {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		LOG.info("File at: " + TEMPORARY_SPACE);
+		final Properties sysProps = System.getProperties();
+
+		String dir = TEMPORARY_SPACE;
+		final String dirConfig = sysProps.getProperty("filedir");
+		if (dirConfig != null) {
+			dir = dirConfig;
+		}
+		LOG.info("File at: " + dir);
+
+		int mapsize = 1024 * 1024;
+		final String sizeconfig = sysProps.getProperty("mapsize");
+		if (sizeconfig != null) {
+			mapsize = Integer.parseInt(sizeconfig);
+		}
+
 		final long start = System.currentTimeMillis();
 
-		final MmapKVDictionary md = new MmapKVDictionary();
+		final MmapKVDictionary md = new MmapKVDictionary(mapsize, dir);
 
 		final long init = System.currentTimeMillis();
 
-		final int size = 300;
+		int size = 2000;
+		final String testsize = sysProps.getProperty("testsize");
+		if (testsize != null) {
+			size = Integer.parseInt(testsize);
+		}
 
 		for (int i = 0; i < size; ++i) {
-			final long mapsize = md.size();
+			final long mdsize = md.size();
 			md.set(new DictKey("key:" + i), new DictValue("value:" + i));
-			if (md.size() != (mapsize + 1)) {
-				LOG.warn("map size error:" + md.size() + " expect:" + (mapsize + 1));
+			if (md.size() != (mdsize + 1)) {
+				LOG.warn("map size error:" + md.size() + " expect:" + (mdsize + 1));
 			}
 		}
 
@@ -156,8 +175,9 @@ public class MmapKVDictionary implements KVDictionary {
 		final long get = System.currentTimeMillis();
 
 		System.out.printf("init(file size: %,d KB): %,d ms \n map size: %,d; set: %,d ms; get: %,d ms \n",
-				md.size / 1000, md.size(), (init - start), (set - init), (get - set));
-		System.out.printf("Took an average of %,d ms to write/read", (get - init) / size);
+				mapsize / 1000, (init - start), md.size(), (set - init), (get - set));
+		System.out
+		.printf("Took an average of %,d ms to write, %,d ms to read", (set - init) / size, (get - set) / size);
 	}
 
 }
