@@ -1,14 +1,18 @@
 package com.weibo.lodil.mmap.wrap;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import com.weibo.lodil.DictItem;
-import com.weibo.lodil.DictKey;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
+import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
 public class DictValueElement extends AbstractHugeElement<DictValueWrap, DictAllocation> implements
-HugeElement<DictValueWrap>,
-DictItem {
+HugeElement<DictValueWrap>, Externalizable, DictItem {
 
 	DictAllocation allocation;
 
@@ -30,26 +34,29 @@ DictItem {
 	}
 
 	public void copyOf(final DictValueWrap t) {
+		setString(t.getString());
 	}
 
 	@Override
-	public void index(final long n) {
-	}
-
-	@Override
-	public long index() {
-		return 0;
+	public int hashCode() {
+		return getString().hashCode();
 	}
 
 	public long longHashCode() {
-		return 0;
-	}
-
-	public void copyOf(final DictKey t) {
+		return hashCode();
 	}
 
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
+		allocation = container.getAllocation(index);
+	}
+
+	public void writeExternal(final ObjectOutput out) throws IOException {
+		Enumerated16FieldModel.write(out, String.class, getString());
+	}
+
+	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
+		setString(Enumerated16FieldModel.read(in, String.class));
 	}
 
 }
