@@ -36,7 +36,7 @@ public class DictAllocation implements HugeAllocation {
 
 	@Override
 	public String toString(){
-		return this.getClass() + " keyBuffer:" + keyBuffer;
+		return this.getClass() + " keyBuffer:" + keyBuffer.hashCode();
 	}
 
 	/**

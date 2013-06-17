@@ -134,16 +134,21 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		final KE ke = acquireKeyElement(0);
 		//final VE ve = acquireValueElement(0);
 		//LOG.debug("ke:" + ke + " ve:" + ve);
-		
+
 		try {
 			for (int i = 0, len = keysBuffer.limit(); i < len; i++) {
 				final int index = (hiHash + i) % len;
 				final int i1 = keysBuffer.get(index);
+
+				LOG.debug(loHash + " keysBuffer.get:" + index + ":" + i1);
+
 				if (i1 == 0) {
 					if (free) {
 						final int loc = size();
 						ensureCapacity(loc + 1);
 						keysBuffer.put(index, loc + 1);
+
+						LOG.debug(loHash + " keysBuffer.put:" + index + ":" + (loc + 1));
 
 						if (keysBuffer.position() >= ((keysBuffer.limit() * 3) / 4)) {
 							growBuffer(loHash);
@@ -238,12 +243,12 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		}
 		ve.copyOf(value);
 		recycle(ve);
-		
+
 		// FIXME copy ke ?
 		//final KE ke =  acquireKeyElement(index);
 		//ke.copyOf(key);
 		//recycle(ke);
-		
+
 		return v;
 	}
 

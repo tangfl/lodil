@@ -11,41 +11,41 @@ import com.weibo.lodil.mmap.impl.AbstractHugeMap;
 import com.weibo.lodil.mmap.impl.MappedFileChannel;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
-public class DictHugeMap extends
-AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, DictAllocation> {
+public class DictHugeEntryMap extends
+AbstractHugeMap<DictEntryImpl, DictEntryElement, DictEntryImpl, DictEntryElement, DictAllocation> {
 
 	final Enumerated16FieldModel<String> stringModelBuffer = new Enumerated16FieldModel<String>("text", 11,
 			String.class);
 
-	public DictHugeMap(final HugeMapBuilder<DictKeyWrap, DictValueWrap> mapBuilder) {
+	public DictHugeEntryMap(final HugeMapBuilder<DictEntryImpl, DictEntryImpl> mapBuilder) {
 		super(mapBuilder);
 	}
 
 	@Override
-	protected DictValueElement createValueElement(final long n) {
-		return new DictValueElement(this, n);
+	protected DictEntryElement createValueElement(final long n) {
+		return new DictEntryElement(this, n);
 	}
 
 	@Override
-	protected DictKeyElement createKeyElement(final long n) {
-		return new DictKeyElement(this, n);
+	protected DictEntryElement createKeyElement(final long n) {
+		return new DictEntryElement(this, n);
 	}
 
 	@Override
-	protected DictKeyWrap createKeyImpl() {
-		return new DictKeyWrap();
+	protected DictEntryImpl createKeyImpl() {
+		return new DictEntryImpl();
 	}
 
 	@Override
-	protected DictValueWrap createValueImpl() {
-		return new DictValueWrap();
+	protected DictEntryImpl createValueImpl() {
+		return new DictEntryImpl();
 	}
 
 	@Override
 	protected DictAllocation createAllocation(final MappedFileChannel mfc) {
 		return new DictAllocation(allocationSize, mfc);
 	}
-	
+
 	@Override
 	protected void compactStart() {
 		stringModelBuffer.compactStart();
@@ -54,7 +54,6 @@ AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, Di
 	protected void compactOnAllocation0(final HugeAllocation allocation, final long thisSize) {
 		compactOnAllocation((DictAllocation) allocation, thisSize);
 	}
-
 
 	@Override
 	protected void compactEnd() {
@@ -67,34 +66,40 @@ AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, Di
 	}
 
 	public boolean contains(final DictKey key) {
-		final DictKeyWrap wrap = new DictKeyWrap(key);
+		final DictEntryImpl wrap = new DictEntryImpl(key, null);
 		return super.containsKey(wrap);
 	}
 
 	public DictValue get(final DictKey key) {
-		final DictKeyWrap wrap = new DictKeyWrap(key);
-		return super.get(wrap);
+		final DictEntryImpl wrap = new DictEntryImpl(key, null);
+		final DictEntryImpl result = super.get(wrap);
+		if (result == null) {
+			return null;
+		}
+		return result.getDictValue();
 	}
 
 	public DictValue put(final DictKey key, final DictValue value) {
-		final DictKeyWrap kwrap = new DictKeyWrap(key);
-		final DictValueWrap vwrap = new DictValueWrap(value);
-		return super.put(kwrap, vwrap);
+		final DictEntryImpl wrap = new DictEntryImpl(key, value);
+		final DictEntryImpl result = super.put(wrap, wrap);
+		if (result == null) {
+			return null;
+		}
+		return result.getDictValue();
 	}
 
 	public boolean mset(final Map<DictKey, DictValue> keyvalues) {
-		final Map<DictKeyWrap, DictValueWrap> wrapMap = new HashMap<DictKeyWrap, DictValueWrap>();
+		final Map<DictEntryImpl, DictEntryImpl> wrapMap = new HashMap<DictEntryImpl, DictEntryImpl>();
 		for (final DictKey key : keyvalues.keySet()) {
-			final DictKeyWrap kwrap = new DictKeyWrap(key);
-			final DictValueWrap vwrap = new DictValueWrap(keyvalues.get(key));
-			wrapMap.put(kwrap, vwrap);
+			final DictEntryImpl wrap = new DictEntryImpl(key, keyvalues.get(key));
+			wrapMap.put(wrap, wrap);
 		}
 		super.putAll(wrapMap);
 		return true;
 	}
 
 	public boolean remove(final DictKey key) {
-		final DictKeyWrap wrap = new DictKeyWrap(key);
+		final DictEntryImpl wrap = new DictEntryImpl(key, null);
 		super.remove(wrap);
 		return true;
 	}

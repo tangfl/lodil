@@ -24,8 +24,8 @@ public class MmapKVDictionary implements KVDictionary {
 
 	public final int size;
 	public final String baseDir;
-	public final HugeMapBuilder<DictKeyWrap, DictValueWrap> mapBuilder;
-	public final DictHugeMap dictMap;
+	public final HugeMapBuilder<DictEntryImpl, DictEntryImpl> mapBuilder;
+	public final DictHugeEntryMap dictMap;
 
 	// this is just for test
 	public MmapKVDictionary() {
@@ -35,14 +35,14 @@ public class MmapKVDictionary implements KVDictionary {
 	public MmapKVDictionary(final int size, final String baseDir) {
 		this.size = size;
 		this.baseDir = baseDir;
-		mapBuilder = new HugeMapBuilder<DictKeyWrap, DictValueWrap>() {
+		mapBuilder = new HugeMapBuilder<DictEntryImpl, DictEntryImpl>() {
 			{
 				allocationSize = size;
 				baseDirectory = baseDir;
 				setRemoveReturnsNull = true;
 			}
 		};
-		dictMap = new DictHugeMap(mapBuilder);
+		dictMap = new DictHugeEntryMap(mapBuilder);
 	}
 
 	public long size() {
@@ -119,17 +119,17 @@ public class MmapKVDictionary implements KVDictionary {
 		LOG.info("File at: " + TEMPORARY_SPACE);
 		final MmapKVDictionary md = new MmapKVDictionary();
 		final int size = 110;
-		
+
 		for (int i = 100; i < size; ++i) {
-			long mapsize = md.size();
+			final long mapsize = md.size();
 			md.set(new DictKey("key:" + i), new DictValue("value:" + i));
 			if (md.size() != (mapsize + 1)){
 				LOG.warn("map size error:" + md.size() + " expect:" + (mapsize + 1));
 			}
 		}
 		for (int i = 100; i < size; ++i) {
-			DictKey key = new DictKey("key:" + i);
-			DictValue value = md.get(key);
+			final DictKey key = new DictKey("key:" + i);
+			final DictValue value = md.get(key);
 			if (value == null){
 				//value = md.get(key);
 			}
