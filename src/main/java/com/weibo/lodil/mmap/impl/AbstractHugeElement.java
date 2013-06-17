@@ -16,11 +16,13 @@ package com.weibo.lodil.mmap.impl;
  *    limitations under the License.
  */
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeAllocation;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 
-public abstract class AbstractHugeElement<T, TA extends HugeAllocation> implements HugeElement<T> {
+public abstract class AbstractHugeElement<T, TA extends HugeAllocation>
+		implements HugeElement<T> {
 	protected final AbstractHugeContainer<T, TA> container;
 	protected long index;
 	protected int offset;
@@ -35,11 +37,14 @@ public abstract class AbstractHugeElement<T, TA extends HugeAllocation> implemen
 
 	private void offset(long index, int allocationSize) {
 		offset = (int) (index % allocationSize);
-		if (offset < 0)
+		if (offset < 0) {
 			offset += allocationSize;
+		}
 	}
 
 	public void index(long n) {
+		LOG.debug(this.toString() + " n:" + n);
+
 		final int allocationSize = container.allocationSize;
 		if (n / allocationSize != index() / allocationSize) {
 			index = n;
@@ -55,11 +60,13 @@ public abstract class AbstractHugeElement<T, TA extends HugeAllocation> implemen
 	}
 
 	void next() {
-		if (index >= container.longSize)
+		if (index >= container.longSize) {
 			container.ensureCapacity(index);
+		}
 		index++;
-		if (++offset >= container.allocationSize)
+		if (++offset >= container.allocationSize) {
 			updateAllocation();
+		}
 	}
 
 	void previous() {
@@ -73,8 +80,9 @@ public abstract class AbstractHugeElement<T, TA extends HugeAllocation> implemen
 
 	private void updateAllocation() {
 		int allocationSize = container.allocationSize;
-		if (index >= 0)
+		if (index >= 0) {
 			updateAllocation0(allocationSize);
+		}
 		offset(index, allocationSize);
 	}
 

@@ -7,6 +7,7 @@ import java.io.ObjectOutput;
 
 import com.weibo.lodil.DictItem;
 import com.weibo.lodil.DictValue;
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.api.HugeElementType;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
@@ -33,20 +34,23 @@ public class DictValueWrap extends DictValue implements DictItem, HugeElement<Di
 	}
 
 	public void copyOf(final DictValue t) {
+		LOG.debug(t.toString());
 		setString(t.getString());
 	}
 
 	public void index(final long n) {
+		LOG.debug(this.toString() + " n:" + n);
 		throw new UnsupportedOperationException();
 	}
 
 	public long index() {
+		LOG.debug(this.toString());
 		return -1;
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass() + ":" + getString();
+		return this.getClass() + ":" + getString() + " hash:" + getString().hashCode();
 	}
 
 	@Override
@@ -69,6 +73,7 @@ public class DictValueWrap extends DictValue implements DictItem, HugeElement<Di
 	}
 
 	public long longHashCode() {
+		LOG.debug(this.toString());
 		return hashCode();
 	}
 

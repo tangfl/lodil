@@ -22,6 +22,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.annotation.ElementType;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.ObjectTypes;
 import com.weibo.lodil.mmap.impl.AbstractHugeArrayList;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
@@ -39,11 +40,11 @@ import com.weibo.lodil.mmap.model.LongFieldModel;
 import com.weibo.lodil.mmap.model.ObjectFieldModel;
 import com.weibo.lodil.mmap.model.ShortFieldModel;
 
-public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAllocation> implements HandTypes,
+public class HandTypesListElement extends AbstractHugeElement<HandTypes, HandTypesAllocation> implements HandTypes,
 		Externalizable {
 	HandTypesAllocation allocation;
 
-	public HandTypesElement(final AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesElement> list, final long n) {
+	public HandTypesListElement(final AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesListElement> list, final long n) {
 		super(list, n);
 	}
 
@@ -158,10 +159,11 @@ public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAl
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
-				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
-				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
-				+ getElementType() + ", string='" + getString() + '\'' + '}';
+//		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
+//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
+//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
+//				+ getElementType() + ", string='" + getString() + '\'' + '}';
+		return "HandTypesElement{int=" + getInt() +  '}';
 	}
 
 	@Override
@@ -229,13 +231,15 @@ public class HandTypesElement extends AbstractHugeElement<HandTypes, HandTypesAl
 	}
 
 	public void copyOf(final HandTypes t) {
+		LOG.debug(t.toString());
+		
 		setBoolean(t.getBoolean());
 		setBoolean2(t.getBoolean2());
 		setByte2(t.getByte2());
 		setA(getA());
 
-		if (t instanceof HandTypesElement) {
-			final HandTypesElement mte = (HandTypesElement) t;
+		if (t instanceof HandTypesListElement) {
+			final HandTypesListElement mte = (HandTypesListElement) t;
 			if (mte.container == container) {
 
 				allocation.m_byte.put(offset, mte.allocation.m_byte.get(mte.offset));

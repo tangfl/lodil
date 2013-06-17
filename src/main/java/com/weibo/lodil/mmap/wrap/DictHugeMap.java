@@ -6,6 +6,7 @@ import java.util.Map;
 import com.weibo.lodil.DictKey;
 import com.weibo.lodil.DictValue;
 import com.weibo.lodil.mmap.HugeMapBuilder;
+import com.weibo.lodil.mmap.api.HugeAllocation;
 import com.weibo.lodil.mmap.impl.AbstractHugeMap;
 import com.weibo.lodil.mmap.impl.MappedFileChannel;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
@@ -13,7 +14,7 @@ import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 public class DictHugeMap extends
 AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, DictAllocation> {
 
-	final Enumerated16FieldModel<String> stringEnumerated16FieldModel = new Enumerated16FieldModel<String>("text", 11,
+	final Enumerated16FieldModel<String> stringModelBuffer = new Enumerated16FieldModel<String>("text", 11,
 			String.class);
 
 	public DictHugeMap(final HugeMapBuilder<DictKeyWrap, DictValueWrap> mapBuilder) {
@@ -44,17 +45,25 @@ AbstractHugeMap<DictKeyWrap, DictKeyElement, DictValueWrap, DictValueElement, Di
 	protected DictAllocation createAllocation(final MappedFileChannel mfc) {
 		return new DictAllocation(allocationSize, mfc);
 	}
-
+	
 	@Override
 	protected void compactStart() {
+		stringModelBuffer.compactStart();
 	}
+
+	protected void compactOnAllocation0(final HugeAllocation allocation, final long thisSize) {
+		compactOnAllocation((DictAllocation) allocation, thisSize);
+	}
+
 
 	@Override
 	protected void compactEnd() {
+		stringModelBuffer.compactEnd();
 	}
 
 	@Override
-	protected void compactOnAllocation(final DictAllocation ta, final long i) {
+	protected void compactOnAllocation(final DictAllocation allocation, final long i) {
+		stringModelBuffer.compactScan(allocation.keyBuffer, i);
 	}
 
 	public boolean contains(final DictKey key) {

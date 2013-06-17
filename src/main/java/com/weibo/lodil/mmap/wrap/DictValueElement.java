@@ -18,6 +18,7 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 
 	public DictValueElement(final DictHugeMap hugeMap, final long n) {
 		super(hugeMap, n);
+		LOG.debug("new DictValueElement with n:" + n);
 	}
 
 	@Override
@@ -26,14 +27,19 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 	}
 
 	public void setString(final String text) {
-		((DictHugeMap) container).stringEnumerated16FieldModel.set(allocation.m_string, offset, text);
+		LOG.debug(text + " setTo " + allocation.valueBuffer + " at " + offset);
+		((DictHugeMap) container).stringModelBuffer.set(allocation.valueBuffer, offset, text);
 	}
 
 	public String getString() {
-		return ((DictHugeMap) container).stringEnumerated16FieldModel.get(allocation.m_string, offset);
+		final String result = ((DictHugeMap) container).stringModelBuffer.get(allocation.valueBuffer, offset);
+		LOG.debug(result + " getFrom " + allocation.valueBuffer + " at " + offset);
+		return result;
 	}
 
 	public void copyOf(final DictValueWrap t) {
+
+		LOG.debug(t.toString());
 		setString(t.getString());
 	}
 
@@ -57,6 +63,39 @@ HugeElement<DictValueWrap>, Externalizable, DictItem {
 
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		setString(Enumerated16FieldModel.read(in, String.class));
+	}
+
+	@Override
+	public void index(final long n) {
+		//LOG.debug(this.toString() + " n:" + n);
+		super.index(n);
+	}
+
+	@Override
+	public long index() {
+		//LOG.debug(this.toString());
+		return super.index();
+	}
+
+	public int hashCode(){
+		return getString().hashCode();
+	}
+
+	public long longHashCode() {
+		LOG.debug(this.toString());
+		return hashCode();
+	}
+
+
+	@Override
+	protected void updateAllocation0(final int allocationSize) {
+		allocation = container.getAllocation(index);
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass() + ":" + getString() + " hash:" + getString().hashCode();
 	}
 
 }

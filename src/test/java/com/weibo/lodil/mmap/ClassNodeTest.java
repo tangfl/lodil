@@ -27,16 +27,16 @@ import org.objectweb.asm.util.ASMifierClassVisitor;
 
 import com.weibo.lodil.mmap.hand.HandTypesAllocation;
 import com.weibo.lodil.mmap.hand.HandTypesArrayList;
-import com.weibo.lodil.mmap.hand.HandTypesElement;
-import com.weibo.lodil.mmap.hand.HandTypesImpl;
+import com.weibo.lodil.mmap.hand.HandTypesListElement;
+import com.weibo.lodil.mmap.hand.HandTypesValueImpl;
 
 @SuppressWarnings("rawtypes")
 public class ClassNodeTest {
 	@Test
 	@Ignore
 	public void test() throws IOException {
-		for (final Class clazz : new Class[] { HandTypesArrayList.class, HandTypesAllocation.class, HandTypesElement.class,
-				HandTypesImpl.class }) {
+		for (final Class clazz : new Class[] { HandTypesArrayList.class, HandTypesAllocation.class, HandTypesListElement.class,
+				HandTypesValueImpl.class }) {
 			// for (Class clazz : new Class[]{HandTypesArrayList.class}) {
 			final ClassReader cr = new ClassReader(clazz.getName());
 			final StringWriter sw = new StringWriter();

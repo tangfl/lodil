@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.HugeMapBuilder;
 import com.weibo.lodil.mmap.api.HugeAllocation;
 import com.weibo.lodil.mmap.api.HugeElement;
@@ -84,22 +85,22 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		switch (((HugeElement) o).hugeElementType()) {
 		case Element:
 			if (valueElements.size() < allocationSize) {
-				valueElements.add((VE) o);
+				//valueElements.add((VE) o);
 			}
 			break;
 		case BeanImpl:
 			if (valueImpls.size() < allocationSize) {
-				valueImpls.add((V) o);
+				//valueImpls.add((V) o);
 			}
 			break;
 		case KeyElement:
 			if (keyElements.size() < allocationSize) {
-				keyElements.add((KE) o);
+				//keyElements.add((KE) o);
 			}
 			break;
 		case KeyImpl:
 			if (keyImpls.size() < allocationSize) {
-				keyImpls.add((K) o);
+				//keyImpls.add((K) o);
 			}
 			break;
 		}
@@ -131,14 +132,18 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		final IntBuffer keysBuffer = keysBuffers[loHash];
 
 		final KE ke = acquireKeyElement(0);
+		//final VE ve = acquireValueElement(0);
+		//LOG.debug("ke:" + ke + " ve:" + ve);
+		
 		try {
 			for (int i = 0, len = keysBuffer.limit(); i < len; i++) {
-				final int i1 = keysBuffer.get((hiHash + i) % len);
+				final int index = (hiHash + i) % len;
+				final int i1 = keysBuffer.get(index);
 				if (i1 == 0) {
 					if (free) {
 						final int loc = size();
 						ensureCapacity(loc + 1);
-						keysBuffer.put((hiHash + i) % len, loc + 1);
+						keysBuffer.put(index, loc + 1);
 
 						if (keysBuffer.position() >= ((keysBuffer.limit() * 3) / 4)) {
 							growBuffer(loHash);
@@ -223,7 +228,9 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 	}
 
 	public V put(final K key, final V value) {
-		final VE ve = acquireValueElement(indexOf((KE) key, true, false));
+		final long index = indexOf((KE) key, true, false);
+		LOG.debug("put(key=" + key + ", value=" + value + ") at index:" + index);
+		final VE ve = acquireValueElement(index);
 		V v = null;
 		if (!setRemoveReturnsNull) {
 			v = acquireValueImpl();
@@ -231,6 +238,12 @@ extends AbstractHugeContainer<V, MA> implements HugeMap<K, V> {
 		}
 		ve.copyOf(value);
 		recycle(ve);
+		
+		// FIXME copy ke ?
+		//final KE ke =  acquireKeyElement(index);
+		//ke.copyOf(key);
+		//recycle(ke);
+		
 		return v;
 	}
 

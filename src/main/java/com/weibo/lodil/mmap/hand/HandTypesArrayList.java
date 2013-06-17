@@ -27,7 +27,7 @@ import com.weibo.lodil.mmap.model.Enum8FieldModel;
 import com.weibo.lodil.mmap.model.Enumerated16FieldModel;
 
 @SuppressWarnings("rawtypes")
-public class HandTypesArrayList extends AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesElement> {
+public class HandTypesArrayList extends AbstractHugeArrayList<HandTypes, HandTypesAllocation, HandTypesListElement> {
 	final Enum8FieldModel<ElementType> elementTypeFieldModel = new Enum8FieldModel<ElementType>("elementType", 10,
 			ElementType.class, ElementType.values());
 	final Enumerated16FieldModel<String> stringEnumerated16FieldModel = new Enumerated16FieldModel<String>("text", 11,
@@ -45,13 +45,13 @@ public class HandTypesArrayList extends AbstractHugeArrayList<HandTypes, HandTyp
 	}
 
 	@Override
-	protected HandTypesElement createElement(final long n) {
-		return new HandTypesElement(this, n);
+	protected HandTypesListElement createElement(final long n) {
+		return new HandTypesListElement(this, n);
 	}
 
 	@Override
 	protected HandTypes createImpl() {
-		return new HandTypesImpl();
+		return new HandTypesValueImpl();
 	}
 
 	@Override

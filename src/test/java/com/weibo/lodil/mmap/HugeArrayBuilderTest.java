@@ -35,7 +35,7 @@ import com.weibo.lodil.mmap.api.HugeArrayList;
 import com.weibo.lodil.mmap.api.HugeElement;
 import com.weibo.lodil.mmap.hand.HandTypes;
 import com.weibo.lodil.mmap.hand.HandTypesArrayList;
-import com.weibo.lodil.mmap.hand.HandTypesImpl;
+import com.weibo.lodil.mmap.hand.HandTypesValueImpl;
 
 @SuppressWarnings({ "unused", "unchecked", "rawtypes" })
 public class HugeArrayBuilderTest {
@@ -822,7 +822,7 @@ public class HugeArrayBuilderTest {
 
 		public void run() {
 			for (int i = 0; i < length; i++) {
-				list.add(new HandTypesImpl());
+				list.add(new HandTypesValueImpl());
 			}
 		}
 	}

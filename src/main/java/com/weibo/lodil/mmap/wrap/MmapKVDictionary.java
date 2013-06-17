@@ -10,6 +10,7 @@ import java.util.Map;
 import com.weibo.lodil.DictKey;
 import com.weibo.lodil.DictValue;
 import com.weibo.lodil.KVDictionary;
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.HugeMapBuilder;
 
 /**
@@ -28,7 +29,7 @@ public class MmapKVDictionary implements KVDictionary {
 
 	// this is just for test
 	public MmapKVDictionary() {
-		this(1024 * 1024, TEMPORARY_SPACE);
+		this(64 * 1024, TEMPORARY_SPACE);
 	}
 
 	public MmapKVDictionary(final int size, final String baseDir) {
@@ -115,13 +116,24 @@ public class MmapKVDictionary implements KVDictionary {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
+		LOG.info("File at: " + TEMPORARY_SPACE);
 		final MmapKVDictionary md = new MmapKVDictionary();
-		for (int i = 10; i < 100; ++i) {
-			md.set(new DictKey("key:" + i), new DictValue("value" + i));
+		final int size = 110;
+		
+		for (int i = 100; i < size; ++i) {
+			long mapsize = md.size();
+			md.set(new DictKey("key:" + i), new DictValue("value:" + i));
+			if (md.size() != (mapsize + 1)){
+				LOG.warn("map size error:" + md.size() + " expect:" + (mapsize + 1));
+			}
 		}
-		for (int i = 10; i < 100; ++i) {
-			final DictValue value = md.get(new DictKey("key:" + i));
-			if ((value == null) || !value.equals(new DictValue("value" + i))) {
+		for (int i = 100; i < size; ++i) {
+			DictKey key = new DictKey("key:" + i);
+			DictValue value = md.get(key);
+			if (value == null){
+				//value = md.get(key);
+			}
+			if ((value == null) || !value.equals(new DictValue("value:" + i))) {
 				System.out.println("BANG!");
 			}
 		}

@@ -22,6 +22,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.annotation.ElementType;
 
+import com.weibo.lodil.LOG;
 import com.weibo.lodil.mmap.ObjectTypes;
 import com.weibo.lodil.mmap.impl.AbstractHugeElement;
 import com.weibo.lodil.mmap.impl.AbstractHugeMap;
@@ -156,14 +157,16 @@ public class HandTypesValueElement extends AbstractHugeElement<HandTypes, HandTy
 	@Override
 	protected void updateAllocation0(final int allocationSize) {
 		allocation = container.getAllocation(index);
+		LOG.debug("updateAllocation0:" + allocationSize + " now:" + allocation);
 	}
 
 	@Override
 	public String toString() {
-		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
-				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
-				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
-				+ getElementType() + ", string='" + getString() + '\'' + '}';
+//		return "HandTypesElement{" + "boolean=" + getBoolean() + ", boolean2=" + getBoolean2() + ", byte=" + getByte()
+//				+ ", byte2=" + getByte2() + ", char=" + getChar() + ", short=" + getShort() + ", int=" + getInt()
+//				+ ", float=" + getFloat() + ", long=" + getLong() + ", double=" + getDouble() + ", elementType="
+//				+ getElementType() + ", string='" + getString() + '\'' + '}';
+		return "HandTypesValueElement{int=" + getInt() + "} hash:" + longHashCode();
 	}
 
 	@Override
@@ -231,6 +234,8 @@ public class HandTypesValueElement extends AbstractHugeElement<HandTypes, HandTy
 	}
 
 	public void copyOf(final HandTypes t) {
+		LOG.debug(t.toString());
+		
 		setBoolean(t.getBoolean());
 		setBoolean2(t.getBoolean2());
 		setByte2(t.getByte2());
